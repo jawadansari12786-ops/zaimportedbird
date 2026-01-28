@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaimported Birds - Premium Asil Rooster Farm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #8B0000;
+            --secondary: #DAA520;
+            --accent: #228B22;
+            --light: #FFF8DC;
+            --dark: #2F4F4F;
+            --gray: #696969;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s ease;
+            --border-radius: 8px;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-img {
+            height: 60px;
+            width: 60px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 800;
+            border: 3px solid var(--light);
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 0;
+            line-height: 1;
+        }
+        
+        .logo-text span {
+            font-size: 0.9rem;
+            color: var(--light);
+            font-weight: 400;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            left: 0;
+            bottom: 0;
+            transition: var(--transition);
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-menu a.active {
+            color: var(--secondary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+            margin-top: 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(218, 165, 32, 0.4);
+        }
+        
+        /* Section Common Styles */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background-color: var(--secondary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 20px auto 0;
+        }
+        
+        /* About Section */
+        .about {
+            background-color: white;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-text {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: fadeInLeft 1s ease forwards 0.3s;
+        }
+        
+        .about-text h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .experience-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--light);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .experience-badge i {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-right: 15px;
+        }
+        
+        .about-image {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateX(30px);
+            animation: fadeInRight 1s ease forwards 0.3s;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Rooster Slider Section (FROM FIRST CODE) */
+        .rooster-slider-section {
+            background-color: var(--light);
+        }
+        
+        .rooster-slider {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .slider-container {
+            display: flex;
+            transition: transform 0.8s ease;
+        }
+        
+        .slide {
+            min-width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: white;
+            opacity: 0;
+            transform: translateX(20px);
+            animation: fadeInRight 0.8s ease forwards;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-image {
+            flex: 1;
+            min-width: 300px;
+            overflow: hidden;
+        }
+        
+        .slide-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .slide-content {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .slide-content h3 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .slide-content .subheading {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .slide-content p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .slider-dot.active {
+            background-color: var(--primary);
+            transform: scale(1.3);
+        }
+        
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+        }
+        
+        .slider-arrow {
+            background-color: rgba(139, 0, 0, 0.8);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .slider-arrow:hover {
+            background-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        /* Rooster Cards Section (FROM SECOND CODE) */
+        .rooster-cards-section {
+            background-color: white;
+        }
+        
+        .rooster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .rooster-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .rooster-card:nth-child(1) { animation: fadeInUp 0.6s ease forwards 0.2s; }
+        .rooster-card:nth-child(2) { animation: fadeInUp 0.6s ease forwards 0.3s; }
+        .rooster-card:nth-child(3) { animation: fadeInUp 0.6s ease forwards 0.4s; }
+        .rooster-card:nth-child(4) { animation: fadeInUp 0.6s ease forwards 0.5s; }
+        .rooster-card:nth-child(5) { animation: fadeInUp 0.6s ease forwards 0.6s; }
+        
+        .rooster-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .rooster-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .rooster-info {
+            padding: 25px;
+        }
+        
+        .rooster-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .rooster-info .subheading {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        /* Video Showcase Section (UPDATED FOR 4 VIDEOS) */
+        .video-showcase {
+            background-color: var(--light);
+            padding: 100px 0;
+        }
+        
+        .video-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            min-height: 500px;
+        }
+        
+        .video-content {
+            flex: 1;
+            min-width: 300px;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--primary);
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .video-player {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .video-content h3 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInLeft 0.8s ease forwards;
+        }
+        
+        .video-subheading {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInLeft 0.8s ease forwards 0.2s;
+        }
+        
+        .video-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            opacity: 0.9;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInLeft 0.8s ease forwards 0.4s;
+        }
+        
+        .video-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .video-indicator {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .video-indicator.active {
+            background-color: var(--secondary);
+            transform: scale(1.1);
+            color: var(--primary);
+        }
+        
+        .video-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .time-display {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        /* FAQs Section (FROM FIRST CODE) */
+        .faqs {
+            background-color: white;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .faq-item:nth-child(1) { animation: fadeInUp 0.6s ease forwards 0.2s; }
+        .faq-item:nth-child(2) { animation: fadeInUp 0.6s ease forwards 0.4s; }
+        .faq-item:nth-child(3) { animation: fadeInUp 0.6s ease forwards 0.6s; }
+        .faq-item:nth-child(4) { animation: fadeInUp 0.6s ease forwards 0.8s; }
+        .faq-item:nth-child(5) { animation: fadeInUp 0.6s ease forwards 1s; }
+        
+        .faq-question {
+            background-color: var(--light);
+            padding: 20px 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .faq-question:hover {
+            background-color: rgba(139, 0, 0, 0.05);
+        }
+        
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+            background-color: white;
+        }
+        
+        .faq-answer.open {
+            padding: 25px;
+            max-height: 500px;
+        }
+        
+        .faq-toggle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .faq-question.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        
+        
+       /* Contact Section */
+.contact {
+    background-color: var(--light);
+}
+
+.contact-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 50px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: fadeInLeft 1s ease forwards;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.contact-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.contact-details h3 {
+    font-size: 1.3rem;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.contact-details p {
+    color: var(--gray);
+    font-size: 1.1rem;
+}
+
+.whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #25D366;
+    color: white;
+    padding: 18px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn i {
+    font-size: 1.8rem;
+    margin-right: 15px;
+}
+
+.whatsapp-btn:hover {
+    background-color: #128C7E;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(37, 211, 102, 0.3);
+}
+
+/* Map Styles */
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards 0.5s;
+    border: 3px solid var(--primary);
+}
+
+.contact-map {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: fadeInRight 1s ease forwards;
+}
+
+.contact-map h3 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Map Popup Custom Styles */
+.leaflet-popup-content {
+    font-family: 'Roboto', sans-serif;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-popup-tip {
+    background: white;
+}
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            
+            .video-content h3 {
+                font-size: 2rem;
+            }
+            
+            .video-subheading {
+                font-size: 1.3rem;
+            }
+            
+            .slide-content {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 90px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 90px);
+                background-color: var(--primary);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 40px;
+                transition: var(--transition);
+                box-shadow: var(--shadow);
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 0 0 30px 0;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            section {
+                padding: 80px 0;
+            }
+            
+            .video-container {
+                flex-direction: column;
+            }
+            
+            .video-content {
+                padding: 30px;
+            }
+            
+            .video-player {
+                height: 300px;
+            }
+            
+            .slider-arrows {
+                padding: 0 10px;
+            }
+            
+            .slider-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .slide {
+                flex-direction: column;
+            }
+            
+            .slide-image {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container">
+                <div class="logo-img">Z</div>
+                <div class="logo-text">
+                    <h1>Zaimported Birds</h1>
+                    <span>Premium Aseel Rooster Farm</span>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                
+                
+                <li><a href="#video">Video Showcase</a></li>
+                <li><a href="#faqs">FAQs</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>ZA IMPORTED BIRDS</h1>
+            <p>20+ years of excellence in breeding champion-quality Aseel roosters. Home to Pakistan's most famous breeds with pure Thai bloodlines.</p>
+            <a href="#contact" class="btn">Contact for Premium Birds</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Our Farm</h2>
+                <p>With 20 Years of experience, we've perfected the art of breeding champion Aseel roosters</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Mujhe Aseel Rooster Rakha hoya 20+ Years sa Zayada ka experiences Hai</h3>
+                    <p>Mera name zaid asad ha our mera farm Zaimported Birds hai aur main Pakistan aur Thailand dono countries mein famous breeds ke Aseel roosters rakhta hoon. Mere farm ne 20 saalon se zyada arse mein game birds ki breeding ki hai aur hum ne bohat se award-winning bloodlines develop ki hain.</p>
+                    <p>Meri bohat se breeds Pakistan mein famous hui hain, jaise ke pure asad breed, classic Tag Breed, aur premium sniper Aseel. Humari birds ki strength, stamina, aur beauty unhe Pakistan ke top breeders ke liye ideal banati hai.</p>
+                    <p>Mere farm mein birds ki health aur quality sab se zyada important hai. Har bird ko proper care, nutrition, aur training di jati hai takay woh apni full potential dikha sakein.</p>
+                    
+                    <div class="experience-badge">
+                        <i class="fas fa-award"></i>
+                        <div>
+                            <h4>20+ Years Experience</h4>
+                            <p>Expert in Aseel rooster breeding and training</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <img src=png6.jpg alt="Asil Rooster Farm">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rooster Slider Section (FROM FIRST CODE) -->
+    <section class="rooster-slider-section" id="rooster-slider">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Champion Roosters </h2>
+                <p>Explore our premium Aseel breeds with unique characteristics and champion bloodlines</p>
+            </div>
+            
+            <div class="rooster-slider">
+                <div class="slider-container" id="sliderContainer">
+                    <!-- Slide 1 -->
+                    <div class="slide active">
+                        <div class="slide-image">
+                            <img src=png1.jpg alt="Thai Asil Rooster">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Pure Barmi Aseel</h3>
+                            <div class="subheading">Champion Bloodline</div>
+                            <p>Direct import from Thailand with authentic bloodlines. Known for their free kicking style, sharp spurs, and aggressive fighting style. These birds are 3 time champions.</p>
+                            <p>Height: 24-28 inches | Weight: 2700 gram to 3 kg | Age: 2 Years</p>
+                            <p>Color variations: Black, Red, and Mixed</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2 -->
+                    <div class="slide">
+                        <div class="slide-image">
+                            <img src= png2.jpg alt="Sindhi Asil">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Pakoya breed</h3>
+                            <div class="subheading">Traditional Thai Breed</div>
+                            <p>Pure thai bloodlines with generations of selective breeding. Known for their intelligence, agility, and strong defensive techniques. Perfect for traditional game enthusiasts.</p>
+                            <p>Height: 22-26 inches | Weight: 2.5-3kg | Age: 16-24 months</p>
+                            <p>Color variations: Red, Brown, Black-Red mix</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3 -->
+                    <div class="slide">
+                        <div class="slide-image">
+                            <img src=png3.jpg alt="Lahore Aseel">
+                        </div>
+                        <div class="slide-content">
+                            <h3>pakistani Aseel</h3>
+                            <div class="subheading">Premium Show Quality</div>
+                            <p>Beautiful plumage with majestic appearance. Bred for both show and game qualities. These birds have excellent conformation, strong legs, and impressive endurance.</p>
+                            <p>Height: 25-30 inches | Weight: 3-3.5 kg | Age: 2 Years</p>
+                            <p>Color variations: red and khagori</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 4 -->
+                    <div class="slide">
+                        <div class="slide-image">
+                            <img src=png8.jpg alt="Madras Asil">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Madras Aseel</h3>
+                            <div class="subheading">South Indian Bloodline</div>
+                            <p>Rare South Indian bloodlines with exceptional fighting spirit. Known for their compact bodies, powerful strikes, and high pain tolerance. A favorite among serious breeders.</p>
+                            <p>Height: 20-24 inches | Weight: 2-3 kg | Age: 2.5 Years</p>
+                            <p>Color variations: jawa, Black, Yellow</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 5 -->
+                    <div class="slide">
+                        <div class="slide-image">
+                            <img src=png5.jpg alt="Hybrid Champion">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Hybrid Champion</h3>
+                            <div class="subheading">Custom Breeding Program</div>
+                            <p>Our exclusive hybrid program combines the best traits of Thai and Pakistani bloodlines. These birds are intelligent, adaptable, and have winning genetics for competitive games.</p>
+                            <p>Height: 23-27 inches | Weight: 3-3.5 kg | Age: 12-18 months</p>
+                            <p>Color variations: pila</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slider-arrows">
+                    <button class="slider-arrow prev" id="prevSlide">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slider-arrow next" id="nextSlide">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="slider-nav" id="sliderNav">
+                    <div class="slider-dot active" data-slide="0"></div>
+                    <div class="slider-dot" data-slide="1"></div>
+                    <div class="slider-dot" data-slide="2"></div>
+                    <div class="slider-dot" data-slide="3"></div>
+                    <div class="slider-dot" data-slide="4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rooster Cards Section (FROM SECOND CODE) -->
+    <section class="rooster-cards-section" id="rooster-cards">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Champion Roosters </h2>
+                <p>View Our Champion Birds</p>
+            </div>
+            
+            <div class="rooster-grid">
+                <!-- Rooster Card 1 -->
+                <div class="rooster-card">
+                    <img src=png7.jpg alt="Thai Aseel Rooster" class="rooster-img">
+                    <div class="rooster-info">
+                        <h3>Pure Thai Asil</h3>
+                        <div class="subheading">Champion Bloodline</div>
+                        <p>Direct import from Thailand with authentic bloodlines. Known for exceptional stamina, sharp spurs, and aggressive fighting style.</p>
+                    </div>
+                </div>
+                
+                <!-- Rooster Card 2 -->
+                <div class="rooster-card">
+                    <img src=png4.jpg alt="Sindhi Asel" class="rooster-img">
+                    <div class="rooster-info">
+                        <h3>Sindhi Asil</h3>
+                        <div class="subheading">Traditional Pakistani Breed</div>
+                        <p>Pure Sindhi bloodlines with generations of selective breeding. Known for intelligence, agility, and strong defensive techniques.</p>
+                    </div>
+                </div>
+                
+                <!-- Rooster Card 3 -->
+                <div class="rooster-card">
+                    <img src=png9.jpg alt=" Mainwali Aseel" class="rooster-img">
+                    <div class="rooster-info">
+                        <h3>Lahore Aseel</h3>
+                        <div class="subheading">Premium Show Quality</div>
+                        <p>Beautiful plumage with majestic appearance. Bred for both show and game qualities with excellent conformation.</p>
+                    </div>
+                </div>
+                
+                <!-- Rooster Card 4 -->
+                <div class="rooster-card">
+                    <img src=png10.jpg alt="Madras Asil" class="rooster-img">
+                    <div class="rooster-info">
+                        <h3>Madras Asil</h3>
+                        <div class="subheading">South Indian Bloodline</div>
+                        <p>Rare South Indian bloodlines with exceptional fighting spirit. Compact bodies with powerful strikes and high pain tolerance.</p>
+                    </div>
+                </div>
+                
+                <!-- Rooster Card 5 -->
+                <div class="rooster-card">
+                    <img src=png2.jpg alt="Hybrid Champion" class="rooster-img">
+                    <div class="rooster-info">
+                        <h3>Hybrid Champion</h3>
+                        <div class="subheading">Custom Breeding Program</div>
+                        <p>Exclusive hybrid program combining best traits of Thai and Pakistani bloodlines. Intelligent and adaptable with winning genetics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Showcase Section (UPDATED FOR 4 VIDEOS) -->
+    <section class="video-showcase" id="video">
+        <div class="container">
+            <div class="section-title">
+                <h2>View Our Champion Birds</h2>
+                <p>Each birds are famous in his prime  </p>
+            </div>
+            
+            <div class="video-container">
+                <div class="video-content">
+                    <h3 id="video-title">View our champion birds</h3>
+                    <div class="video-subheading" id="video-subtitle">5 Seconds Auto Play</div>
+                    <div class="video-description" id="video-desc">
+                        This is overs champions views. A little view on it.
+                    </div>
+                    
+                    <div class="video-controls">
+                        <button id="prev-video-btn" class="btn" style="padding: 10px 20px;">
+                            <i class="fas fa-step-backward"></i> Previous
+                        </button>
+                        <button id="play-pause-btn" class="btn" style="padding: 10px 20px;">
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button id="next-video-btn" class="btn" style="padding: 10px 20px;">
+                            Next <i class="fas fa-step-forward"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="video-indicators">
+                        <div class="video-indicator active" data-video="0">1</div>
+                        <div class="video-indicator" data-video="1">2</div>
+                        <div class="video-indicator" data-video="2">3</div>
+                        <div class="video-indicator" data-video="3">4</div>
+                    </div>
+                </div>
+                
+                <div class="video-player">
+                    <!-- Video source will be set by JavaScript -->
+                    <video id="main-video" autoplay muted>
+                        <source src="video1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="time-display" id="time-display">0:05 / 0:05</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center; color: var(--gray);">
+                <p><i class="fas fa-info-circle"></i> Total 5 videos: <strong>video1.mp4, video2.mp4, video3.mp4,video5.mp4, video4.mp4</strong> | Each: <strong>5 seconds</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQs Section (FROM FIRST CODE) -->
+    <section class="faqs" id="faqs">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our Aseel roosters and breeding program</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What makes Aseel roosters different from regular chickens?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Aseel roosters are a specific breed of gamefowl known for their strength, stamina, and fighting spirit. They have a more muscular build, stronger bones, and greater intelligence compared to regular chickens. They are bred specifically for their game qualities and have been selectively bred for centuries for these traits.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do you ensure the quality of your birds?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We maintain strict breeding records and only breed from champion bloodlines. Each bird receives proper nutrition, healthcare, and conditioning. We also conduct regular health checks and provide appropriate vaccinations. Our birds are raised in spacious, clean environments that promote their physical and mental well-being.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What age is best to purchase an Aseel rooster?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The ideal age to purchase an Aseel rooster is between 8 to 12 months. At this age, their physical characteristics are well-developed, and they have received proper training. Younger birds (4-6 months) are also available for breeders who want to raise them with specific training methods. We advise against purchasing birds older than 18 months unless they are proven champions.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do you provide delivery services for birds?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we provide safe and secure delivery services across Pakistan. We use specialized transport containers that ensure the birds' comfort and safety during transit. For international customers, we can arrange export documentation and transportation through approved channels. Delivery charges vary based on location and number of birds.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I visit your farm to see the birds?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! We encourage serious buyers to visit our farm and see our birds in person. This allows you to observe their condition, temperament, and quality firsthand. Please contact us in advance to schedule a visit so we can ensure someone is available to give you a proper tour and answer all your questions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Contact Section with Shakargarh Map -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Get in touch for premium Asil roosters and breeding consultation</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Our Farm Location</h3>
+                        <p>Zaimported Birds Farm<br>Shakargarh, Punjab, Pakistan</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Phone Number</h3>
+                        <p>+92 300 123 4567<br>+92 321 987 6543</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Email Address</h3>
+                        <p>info@zaimportedbirds.com<br>sales@zaimportedbirds.com</p>
+                    </div>
+                </div>
+                
+                <a href="https://wa.me/923245662300" class="whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat Directly on WhatsApp
+                </a>
+            </div>
+            
+            <div class="contact-map">
+                <h3>Find Our Farm in Shakargarh</h3>
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Zaimported Birds</h3>
+                    <p>20+ years of excellence in breeding champion Aseel roosters with pure Thai and Pakistani bloodlines. We provide premium quality game birds to serious breeders across Pakistan.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        
+                        
+                        <li><a href="#video">Video Showcase</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Our Breeds</h3>
+                    <ul class="footer-links">
+                        <li><a href="#rooster-slider">Thai Asil</a></li>
+                        <li><a href="#rooster-slider">Sindhi Asil</a></li>
+                        <li><a href="#rooster-slider">Lahore Aseel</a></li>
+                        <li><a href="#rooster-slider">Madras Asil</a></li>
+                        <li><a href="#rooster-slider">Hybrid Champions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Near narowal shakargarh, Punjab, Pakistan</p>
+                    <p><i class="fas fa-phone"></i> +92 324 566 2300</p>
+                    <p><i class="fas fa-envelope"></i> info@zaimportedbirds.com</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Zaimported Birds. All rights reserved. | Premium Asil Rooster Farm</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Rooster Slider Functionality (FROM FIRST CODE)
+        const sliderContainer = document.getElementById('sliderContainer');
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const prevBtn = document.getElementById('prevSlide');
+        const nextBtn = document.getElementById('nextSlide');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        function showSlide(index) {
+            // Ensure index is within bounds
+            if (index >= totalSlides) index = 0;
+            if (index < 0) index = totalSlides - 1;
+            
+            // Update slider position
+            sliderContainer.style.transform = `translateX(-${index * 100}%)`;
+            
+            // Update active classes
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            
+            currentSlide = index;
+            
+            // Add animation to active slide
+            const activeSlide = slides[index];
+            activeSlide.style.animation = 'none';
+            setTimeout(() => {
+                activeSlide.style.animation = 'fadeInRight 0.8s ease forwards';
+            }, 10);
+        }
+        
+        // Next slide
+        nextBtn.addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+        
+        // Previous slide
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+        
+        // Dot navigation
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const slideIndex = parseInt(this.getAttribute('data-slide'));
+                showSlide(slideIndex);
+            });
+        });
+        
+        // Auto slide every 5 seconds
+        let slideInterval = setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Pause auto-slide on hover
+        const slider = document.querySelector('.rooster-slider');
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        slider.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 5000);
+        });
+        
+        // Video Showcase Functionality (UPDATED - 4 VIDEOS)
+        const videoElement = document.getElementById('main-video');
+        const videoTitle = document.getElementById('video-title');
+        const videoSubtitle = document.getElementById('video-subtitle');
+        const videoDesc = document.getElementById('video-desc');
+        const videoIndicators = document.querySelectorAll('.video-indicator');
+        const prevVideoBtn = document.getElementById('prev-video-btn');
+        const nextVideoBtn = document.getElementById('next-video-btn');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const timeDisplay = document.getElementById('time-display');
+        
+        // 4 Videos Data
+        const videoData = [
+            {
+                title: "1 Rooster",
+                subtitle: "Rooster Name: Pushpa,3 time champion",
+                description: "This rooster are famous his free kicking style and his back footing.",
+                videoSrc: "video1.mp4"
+            },
+            {
+                title: "2 Rooster",
+                subtitle: "Rooster Name: kala, 2 time champion",
+                description: "This rooster are famous his speed panus style gaming and his aggresion.",
+                videoSrc: "video2.mp4"
+            },
+            {
+                title: "3 Rooster",
+                subtitle: "Rooster Name: Goli,2 time champion",
+                description: "This rooster are famous his strength and high speeding.",
+                videoSrc: "video3.mp4"
+            },
+            {
+                title: "4 Rooster",
+                subtitle: "Rooster Name: M4,3 time champion",
+                description: "This rooster are famous his high speed and his pakoya gaming style.",
+                videoSrc: "video4.mp4"
+            }
+        ];
+        
+        let currentVideoIndex = 0;
+        let isPlaying = true;
+        const PLAY_DURATION = 5; // 5 seconds per video
+        let countdownTimer;
+        let videoInterval;
+        
+        // Change video function
+        function changeVideo(index) {
+            currentVideoIndex = index;
+            const video = videoData[index];
+            
+            // Update video source
+            videoElement.src = video.videoSrc;
+            videoElement.load();
+            videoElement.currentTime = 0;
+            
+            // Update text
+            videoTitle.textContent = video.title;
+            videoSubtitle.textContent = video.subtitle;
+            videoDesc.textContent = video.description;
+            
+            // Update indicators
+            videoIndicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+            
+            // Play video
+            if (isPlaying) {
+                videoElement.play();
+            }
+            
+            // Start timer
+            startTimer();
+        }
+        
+        // Start countdown timer
+        function startTimer() {
+            if (countdownTimer) clearInterval(countdownTimer);
+            
+            let secondsLeft = PLAY_DURATION;
+            updateTimeDisplay(secondsLeft);
+            
+            countdownTimer = setInterval(() => {
+                secondsLeft--;
+                updateTimeDisplay(secondsLeft);
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    if (isPlaying) {
+                        // Auto play next video
+                        let nextIndex = (currentVideoIndex + 1) % videoData.length;
+                        changeVideo(nextIndex);
+                    }
+                }
+            }, 1000);
+        }
+        
+        // Update time display
+        function updateTimeDisplay(seconds) {
+            timeDisplay.textContent = `0:0${seconds} / 0:0${PLAY_DURATION}`;
+        }
+        
+        // Auto change video every 5 seconds (backup system)
+        function startAutoPlay() {
+            videoInterval = setInterval(() => {
+                if (isPlaying && videoElement.currentTime >= PLAY_DURATION) {
+                    let nextIndex = (currentVideoIndex + 1) % videoData.length;
+                    changeVideo(nextIndex);
+                }
+            }, 100);
+        }
+        
+        // Play/Pause button
+        playPauseBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                videoElement.pause();
+                this.innerHTML = '<i class="fas fa-play"></i> Play';
+                this.style.backgroundColor = 'var(--accent)';
+                clearInterval(countdownTimer);
+            } else {
+                videoElement.play();
+                this.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                this.style.backgroundColor = 'var(--primary)';
+                startTimer();
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // Previous video button
+        prevVideoBtn.addEventListener('click', function() {
+            let prevIndex = currentVideoIndex - 1;
+            if (prevIndex < 0) prevIndex = videoData.length - 1;
+            changeVideo(prevIndex);
+        });
+        
+        // Next video button
+        nextVideoBtn.addEventListener('click', function() {
+            let nextIndex = (currentVideoIndex + 1) % videoData.length;
+            changeVideo(nextIndex);
+        });
+        
+        // Video indicators click
+        videoIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                changeVideo(index);
+            });
+        });
+        
+        // Video time update listener (backup)
+        videoElement.addEventListener('timeupdate', function() {
+            if (isPlaying && videoElement.currentTime >= PLAY_DURATION) {
+                let nextIndex = (currentVideoIndex + 1) % videoData.length;
+                changeVideo(nextIndex);
+            }
+        });
+        
+        // Initialize first video
+        changeVideo(0);
+        startAutoPlay();
+        
+        // FAQs Toggle (FROM FIRST CODE)
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const toggle = this.querySelector('.faq-toggle');
+                
+                // Toggle active class on question
+                this.classList.toggle('active');
+                
+                // Toggle answer visibility
+                if (answer.classList.contains('open')) {
+                    answer.classList.remove('open');
+                    toggle.textContent = '+';
+                } else {
+                    // Close other open answers
+                    document.querySelectorAll('.faq-answer.open').forEach(openAnswer => {
+                        openAnswer.classList.remove('open');
+                        openAnswer.previousElementSibling.classList.remove('active');
+                        openAnswer.previousElementSibling.querySelector('.faq-toggle').textContent = '+';
+                    });
+                    
+                    answer.classList.add('open');
+                    toggle.textContent = '×';
+                }
+            });
+        });
+        
+        // Initialize Map for Shakargarh
+function initMap() {
+    // Shakargarh coordinates: 32.274041, 75.123013
+    const shakargarh = [32.274041, 75.123013];
+    
+    // Create map centered on Shakargarh
+    const map = L.map('map').setView(shakargarh, 14);
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+    }).addTo(map);
+    
+    // Custom red marker icon
+    const redIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+    
+    // Add marker for the farm
+    const marker = L.marker(shakargarh, {icon: redIcon}).addTo(map);
+    
+    // Custom popup content
+    const popupContent = `
+        <div style="padding: 10px; min-width: 250px; font-family: 'Roboto', sans-serif;">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div style="background: #8B0000; color: white; padding: 8px; border-radius: 5px; font-weight: bold; font-size: 1.2rem;">
+                    <i class="fas fa-map-marker-alt"></i> Zaimported Birds Farm
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <div style="display: flex; align-items: start; margin-bottom: 8px;">
+                    <i class="fas fa-location-dot" style="color: #8B0000; margin-right: 8px; margin-top: 3px;"></i>
+                    <div>
+                        <strong style="color: #333;">Location:</strong><br>
+                        Shakargarh, Punjab<br>
+                        Pakistan
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: start; margin-bottom: 8px;">
+                    <i class="fas fa-phone" style="color: #8B0000; margin-right: 8px; margin-top: 3px;"></i>
+                    <div>
+                        <strong style="color: #333;">Phone:</strong><br>
+                        +92 324 566 2300
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                    <i class="fas fa-clock" style="color: #8B0000; margin-right: 8px; margin-top: 3px;"></i>
+                    <div>
+                        <strong style="color: #333;">Hours:</strong><br>
+                        9:00 AM - 12:00 PM
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=32.274041,75.123013" 
+                   target="_blank" 
+                   style="display: inline-block; background: #8B0000; color: white; 
+                          padding: 8px 16px; text-decoration: none; border-radius: 4px; 
+                          font-weight: 600; transition: all 0.3s; border: none; cursor: pointer;">
+                    <i class="fas fa-directions"></i> Get Directions
+                </a>
+            </div>
+        </div>
+    `;
+    
+    // Bind popup to marker
+    marker.bindPopup(popupContent).openPopup();
+    
+    // Add a circle around the location
+    L.circle(shakargarh, {
+        color: '#8B0000',
+        fillColor: '#DAA520',
+        fillOpacity: 0.1,
+        radius: 300,
+        weight: 2
+    }).addTo(map).bindPopup("Our Farm Area");
+    
+    // Add zoom control
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
+    
+    // Add scale control
+    L.control.scale({
+        imperial: false,
+        metric: true
+    }).addTo(map);
+}
+
+// Initialize map when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
+});
+        
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if(scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Header shadow on scroll
+            const header = document.querySelector('header');
+            if(window.scrollY > 50) {
+                header.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            }
+        });
+        
+        // Animation on scroll
+        function checkScroll() {
+            const elements = document.querySelectorAll('.section-title, .about-text, .about-image, .contact-info, .contact-map, .faq-item, .rooster-card, .slide');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if(elementTop < windowHeight - 100) {
+                    element.style.animationPlayState = 'running';
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+        window.addEventListener('load', checkScroll);
+    </script>
+</body>
+</html>
